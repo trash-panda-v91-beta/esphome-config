@@ -1,0 +1,118 @@
+substitutions:
+  device_name: blitzwolf-shp6-power-plug
+  # Higher value gives lower watt readout
+  current_res: "0.00290"
+  # Lower value gives lower voltage readout
+  voltage_div: "940"
+  # Max Power is 3450W for 15A and 2300W for 10A
+  max_power: "3450"
+  # 2020 model uses GPIO4 for CF1
+  cf1_pin: GPIO14
+  # BW-SHP6, outlet with powermonitoring.
+  # One button for the relay, and one red led for the relay, as well as a blue status led
+  # Static IP is configured, and fast_connect is enabled, as the SSID is hidden
+  # Webserver is active and pw protected, and the OTA is password protected
+
+esphome:
+  name: "${device_name}"
+  friendly_name: BlitzWolf SHP6 Power Plug
+  platform: ESP8266
+  board: esp8285
+  on_boot:
+    then:
+      - switch.turn_on: relay
+      - output.turn_on: led
+
+logger:
+  baud_rate: 0
+
+api:
+  encryption:
+    key: "kNweSaN2hT0vVjdm2DgW9FKlPN/Uib0+nxcNzWXVaaM="
+
+ota:
+  password: "07a111aea8770e73483d2928b7226911"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pwd
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Blitzwolf-Shp6-Power-Plug"
+    password: "SbglZp0QydxU"
+
+captive_portal:
+    
+# Button configuration
+binary_sensor:
+  - platform: gpio
+    name: "${device_name} button"
+    id: button
+    pin:
+      number: GPIO13
+      inverted: true
+    on_press:
+      then:
+        - switch.toggle: relay
+
+# Setup of LED's used in displaying Switch status
+output:
+  - platform: gpio
+    pin: GPIO0
+    inverted: true
+    id: led
+
+# Config for switch
+switch:
+  - platform: gpio
+    pin: GPIO15
+    restore_mode: RESTORE_DEFAULT_OFF
+    id: relay
+    name: "${device_name} Relay"
+    on_turn_on:
+      - output.turn_on: led
+    on_turn_off:
+      - output.turn_off: led
+
+# Status LED for connection
+status_led:
+  pin:
+    number: GPIO2
+    inverted: true
+
+# Sensors for Voltage (V), Current (A), Power (W), Daily energy usage (kWh)
+sensor:
+  - platform: hlw8012
+    energy:
+      name: "${device_name} Energy"
+      unit_of_measurement: "Wh"
+      icon: mdi:flash-outline
+    sel_pin:
+      number: GPIO12
+      inverted: true
+    cf_pin: GPIO5
+    cf1_pin: ${cf1_pin}
+    current_resistor: ${current_res}
+    voltage_divider: ${voltage_div}
+    current:
+      name: "${device_name} Current"
+      unit_of_measurement: "A"
+      accuracy_decimals: 3
+      icon: mdi:flash-outline
+    voltage:
+      name: "${device_name} Voltage"
+      unit_of_measurement: "V"
+      icon: mdi:flash-outline
+    power:
+      name: "${device_name} Power"
+      unit_of_measurement: "W"
+      id: power
+      icon: mdi:flash-outline
+      on_value_range:
+        - above: ${max_power}
+          then:
+            - output.turn_off: led
+            - switch.turn_off: relay
+    change_mode_every: 4
+    update_interval: 10s
