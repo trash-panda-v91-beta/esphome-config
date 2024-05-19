@@ -1,0 +1,5 @@
+---
+esphome:
+  <<: !include .esphome.yaml
+  platform: ESP8266
+  board: esp8285

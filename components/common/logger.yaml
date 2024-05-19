@@ -1,0 +1,11 @@
+---
+# https://esphome.io/components/logger.html
+
+substitutions:
+  log_level: INFO
+  log_baudrate: "0"
+
+logger:
+  id: component_logger
+  baud_rate: ${log_baudrate}
+  level: ${log_level}
