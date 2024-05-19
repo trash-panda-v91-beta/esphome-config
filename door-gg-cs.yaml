@@ -1,0 +1,8 @@
+---
+substitutions:
+  area: gg.cs
+  device_name: door
+  friendly_name: Garage Door
+
+packages:
+  device: !include devices/opengarage.yaml
