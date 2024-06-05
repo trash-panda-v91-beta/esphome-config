@@ -1,0 +1,10 @@
+---
+substitutions:
+  area: gn.cs
+  device_name: pond-power-plug
+  friendly_name: Pond Power Plug
+  current_res: "0.00257"
+  voltage_div: "947"
+
+packages:
+  device: !include devices/cloudfree-smart-plug.yaml
