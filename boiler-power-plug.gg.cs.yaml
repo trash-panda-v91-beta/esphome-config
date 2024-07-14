@@ -3,8 +3,8 @@ substitutions:
   area: gn.cs
   device_name: boiler-power-plug
   friendly_name: Boiler Power Plug
-  current_res: "0.00257"
-  voltage_div: "947"
+  current_res: "0.002595"
+  voltage_div: "856"
 
 packages:
   device: !include devices/cloudfree-smart-plug.yaml
