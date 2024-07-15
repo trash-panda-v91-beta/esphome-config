@@ -1,6 +1,6 @@
 ---
 substitutions:
-  area: gn.cs
+  area: gg.cs
   device_name: boiler-power-plug
   friendly_name: Boiler Power Plug
   current_res: "0.002595"
