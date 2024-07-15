@@ -1,9 +1,0 @@
----
-substitutions:
-  area: gn.cs
-  device_name: lake-power-plug
-  friendly_name: Lake Power Plug
-  max_power: "2300"
-
-packages:
-  device: !include devices/blitzwolf-shp6.yaml
