@@ -3,6 +3,7 @@
 
 ota:
   id: component_ota
+  platform: esphome
   safe_mode: true
   reboot_timeout: 10min
   password: !secret ota_password
