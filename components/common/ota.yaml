@@ -2,9 +2,10 @@
 # https://esphome.io/components/ota.html
 
 ota:
-  id: component_ota
   platform: esphome
-  safe_mode: true
-  reboot_timeout: 10min
   password: !secret ota_password
+
+safe_mode:
+  id: component_safe_mode
   num_attempts: 5
+  reboot_timeout: 10min
