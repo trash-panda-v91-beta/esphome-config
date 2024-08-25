@@ -3,8 +3,7 @@ substitutions:
   area: gg.cs
   device_name: boiler-power-plug
   friendly_name: Boiler Power Plug
-  current_res: "0.00248"
-  voltage_div: "954"
+  max_power: "2300"
 
 packages:
-  device: !include devices/cloudfree-smart-plug.yaml
+  device: !include devices/blitzwolf-shp6.yaml
