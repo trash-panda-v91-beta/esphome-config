@@ -1,0 +1,11 @@
+---
+substitutions:
+  area: lrm.nsr
+  device_name: wall-switch-1
+  friendly_name: Wall Switch 1
+  relay_restore_mode: "RESTORE_DEFAULT_OFF" # or ALWAYS_OFF, ALWAYS_ON
+  direct_mode: "0" # -1 to disable, else toggle amount
+  double_toggle: "false"
+  toggle_duration: "250" # Time in ms
+packages:
+  device: !include devices/sonoff-mini.yaml
