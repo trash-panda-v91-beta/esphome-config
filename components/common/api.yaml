@@ -1,6 +1,7 @@
 ---
 # https://esphome.io/components/api.html
 api:
+  id: api_server
   encryption:
     key: !secret api_key
   reboot_timeout: 0s
