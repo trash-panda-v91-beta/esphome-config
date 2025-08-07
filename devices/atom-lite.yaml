@@ -1,0 +1,60 @@
+packages:
+  <<: !include_dir_named ../components/common
+  wifi: !include ../components/wifi.yaml
+  board: !include ../boards/esp32.yaml
+
+esp32:
+  board: m5stack-atom
+  framework:
+    type: arduino
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO39
+      mode: INPUT
+      inverted: true
+    name: "Atom Button"
+    id: atom_button
+    filters:
+      - delayed_on: 50ms
+      - delayed_off: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 0.8s
+          - OFF for at most 0.5s
+          - ON for at most 0.8s
+          - OFF for at least 0.2s
+        then:
+          - logger.log: "Double Clicked"
+          - light.turn_on:
+              id: atom_light
+              red: 100%
+              blue: 50%
+              green: 20%
+              brightness: 50%
+      - timing:
+          - ON for at least 0.8s
+        then:
+          - logger.log: "Single Long Clicked"
+          - light.turn_on:
+              id: atom_light
+              green: 100%
+              blue: 50%
+              red: 30%
+              brightness: 100%
+
+light:
+  - platform: neopixelbus
+    type: GRB
+    pin: GPIO27
+    num_leds: 1
+    variant: sk6812
+    name: "Atom RGB Light"
+    id: atom_light
+    restore_mode: RESTORE_DEFAULT_OFF
+    effects:
+      - random:
+          name: "Random"
+          transition_length: 1s
+          update_interval: 1s
