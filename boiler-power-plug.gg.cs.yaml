@@ -1,9 +1,0 @@
----
-substitutions:
-  area: gg.cs
-  device_name: boiler-power-plug
-  friendly_name: Boiler Power Plug
-  max_power: "2300"
-
-packages:
-  device: !include devices/blitzwolf-shp6.yaml
