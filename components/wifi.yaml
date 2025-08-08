@@ -1,4 +1,3 @@
----
 # https://esphome.io/components/wifi.html
 
 substitutions:
@@ -17,30 +16,10 @@ wifi:
 captive_portal:
 
 sensor:
-  - platform: template
-    id: sensor_wifi_signal_percentage
-    name: "${friendly_name} WiFi Signal Percentage"
-    icon: "mdi:wifi"
-    unit_of_measurement: "%"
-    update_interval: never
-    lambda: |-
-      if (id(sensor_wifi_signal).state) {
-        if (id(sensor_wifi_signal).state <= -100 ) {
-          return 0;
-        } else if (id(sensor_wifi_signal).state >= -50) {
-          return 100;
-        } else {
-          return 2 * (id(sensor_wifi_signal).state + 100);
-        }
-      } else {
-        return NAN;
-      }
   - platform: wifi_signal
     id: sensor_wifi_signal
     name: "${friendly_name} WiFi Signal"
     update_interval: 300s
-    on_value:
-      - component.update: sensor_wifi_signal_percentage
 
 text_sensor:
   - platform: wifi_info
