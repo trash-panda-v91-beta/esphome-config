@@ -201,9 +201,9 @@ switch:
     register_type: holding
     write_lambda: |-
       if (x) {
-        return {0xAA};  // Send ON command
+        return (uint16_t)0xAA00;  // ON command
       } else {
-        return {0x55};  // Send OFF command
+        return (uint16_t)0x5500;  // OFF command
       }
 
   - platform: template
@@ -217,6 +217,7 @@ switch:
       - switch.turn_off: modbus_power_switch
       - delay: 2s
     lambda: |-
+      ESP_LOGD("power_control", "Unit status: %d", (int)id(gree_status_unit_status).state);
       if (id(gree_status_unit_status).state == 8) {
         return false;
       } else {
