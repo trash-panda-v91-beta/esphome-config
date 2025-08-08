@@ -26,7 +26,7 @@ modbus_controller:
     address: 0x01
     modbus_id: heat_pump_modbus
     setup_priority: -10
-    update_interval: 30s
+    update_interval: 15s
 
 # number:
 #   - platform: modbus_controller
@@ -299,6 +299,13 @@ modbus_controller:
 #     device_class: heat
 #     entity_category: diagnostic
 #
+#
+
+text_sensor:
+  - platform: template
+    id: versati_117_unit_status_text
+    name: "versati_117_unit_status"
+
 sensor:
   #   - platform: modbus_controller
   #     modbus_controller_id: heat_pump_controller
@@ -347,14 +354,31 @@ sensor:
   #     value_type: U_WORD
   #     unit_of_measurement: "A"
   #
+
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
-    id: gree_status_unit_status
-    name: "Unit Status"
-    state_class: measurement
+    id: versati_unit_status_number
+    internal: true
     address: 117
     register_type: holding
-    value_type: U_WORD
+    value_type: S_WORD
+    on_value:
+      then:
+        - lambda: |-
+            int state = id(versati_unit_status_number).state;
+            std::string text;
+            if (state == 1) {
+              text = "COOL";
+            } else if (state == 2) {
+              text = "HEAT";
+            } else if (state == 6) {
+              text = "HOT WATER";
+            } else if (state == 8) {
+              text = "OFF";
+            } else {
+              text = "UNKNOWN";
+            }
+            id(versati_117_unit_status_text).publish_state(text);
 
 #   - platform: modbus_controller
 #     modbus_controller_id: heat_pump_controller
