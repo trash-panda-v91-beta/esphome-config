@@ -194,19 +194,34 @@ select:
 
 switch:
   - platform: modbus_controller
-    name: "Power"
     modbus_controller_id: heat_pump_controller
     id: modbus_power_switch
+    internal: true
     address: 42
     register_type: holding
     write_lambda: |-
       if (x) {
-        return {0xAA};  // On
+        return {0xAA};  // Send ON command
       } else {
-        return {0x55};  // Off
+        return {0x55};  // Send OFF command
       }
-    icon: "mdi:power"
-    device_class: switch
+
+  - platform: template
+    id: power_control_switch
+    name: "Power Control"
+    optimistic: false
+    turn_on_action:
+      - switch.turn_on: modbus_power_switch
+      - delay: 2s
+    turn_off_action:
+      - switch.turn_off: modbus_power_switch
+      - delay: 2s
+    lambda: |-
+      if (id(gree_status_unit_status).state == 8) {
+        return false;
+      } else {
+        return true;
+      }
 
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
