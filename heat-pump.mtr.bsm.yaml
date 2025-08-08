@@ -192,9 +192,13 @@ switch:
     name: "Power"
     address: 42
     register_type: holding
-    value_type: U_WORD
-    command_on: 0xAA
-    command_off: 0x55
+    write_lambda: |-
+      // On = 0xAA (170), Off = 0x55 (85)
+      if (x) {
+        return {0xAA};  // Send 0xAA for ON
+      } else {
+        return {0x55};  // Send 0x55 for OFF
+      }
     icon: "mdi:power"
     device_class: "switch"
 
