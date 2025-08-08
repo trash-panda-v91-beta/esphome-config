@@ -1,10 +1,14 @@
 # Gree Versati III Heat Pump
+globals:
+  - id: pending_switch_state
+    type: int
+    restore_value: no
+    initial_value: '-1'  # -1: no pending, 0: off pending, 1: on pending
 
 substitutions:
   area: mtr.bsm
   device_name: heat-pump
   friendly_name: Heat Pump
-  log_level: DEBUG
 
 packages:
   device: !include devices/atom-lite.yaml
@@ -28,336 +32,335 @@ modbus_controller:
     setup_priority: -10
     update_interval: 15s
 
-# number:
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_t_water_tank
-#     name: "Hot Water Tank Temperature"
-#     device_class: temperature
-#     address: 13
-#     register_type: holding
-#     value_type: U_WORD
-#     min_value: 40
-#     max_value: 80
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_delta_hot_water
-#     name: "Hot Water Delta Temperature"
-#     device_class: temperature
-#     address: 31
-#     register_type: holding
-#     value_type: U_WORD
-#     min_value: 2
-#     max_value: 8
-#     step: 1
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_wot_heat
-#     name: "Water Outlet Temperature - Heat"
-#     device_class: temperature
-#     address: 10
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_rt_heat
-#     name: "Room Temperature - Heat"
-#     device_class: temperature
-#     address: 12
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_upper_wt_heat
-#     name: "Upper Water Temperature - Heat"
-#     device_class: temperature
-#     address: 21
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_lower_wt_heat
-#     name: "Lower Water Temperature - Heat"
-#     device_class: temperature
-#     address: 22
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_upper_at_heat
-#     name: "Upper Ambient Temperature - Heat"
-#     device_class: temperature
-#     address: 17
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_lower_at_heat
-#     name: "Lower Ambient Temperature - Heat"
-#     device_class: temperature
-#     address: 18
-#     register_type: holding
-#     value_type: S_WORD
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_upper_rt_heat
-#     name: "Upper Room Temperature - Heat"
-#     device_class: temperature
-#     address: 19
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_lower_rt_heat
-#     name: "Lower Room Temperature - Heat"
-#     device_class: temperature
-#     address: 20
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_power_limit
-#     name: "Power Limit"
-#     device_class: power
-#     address: 43
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "kW"
-#     min_value: 0
-#     max_value: 10
-#     step: 0.1
-#
-# select:
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_tank_heater
-#     name: "Tank Heater Mode"
-#     address: 36
-#     value_type: U_WORD
-#     optionsmap:
-#       "Logic 1: Compressor and Tank Heater separate": 1
-#       "Logic 2: Compressor and Tank Heater simultaneous allowed": 2
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_mode
-#     name: "Mode"
-#     address: 2
-#     value_type: U_WORD
-#     optionsmap:
-#       "Heat": 1
-#       "Hot Water": 2
-#       "Cool + Hot Water": 3
-#       "Heat + Hot Water": 4
-#       "Cool": 5
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_thermostat
-#     name: "Thermostat"
-#     address: 39
-#     value_type: U_WORD
-#     optionsmap:
-#       "Without": 0
-#       "Air": 1
-#       "Air + Hot Water": 2
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_status_thermostat
-#     name: "Thermostat Status"
-#     address: 132
-#     value_type: U_WORD
-#     optionsmap:
-#       "Cool": 1
-#       "Heat": 2
-#       "Off": 3
-#
-# switch:
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: modbus_power_switch
-#     internal: true
-#     address: 42
-#     register_type: holding
-#     write_lambda: |-
-#       if (x) {
-#         return (uint16_t)0xAA00;  // ON command
-#       } else {
-#         return (uint16_t)0x5500;  // OFF command
-#       }
-#
-#   - platform: template
-#     id: power_control_switch
-#     name: "Power Control"
-#     optimistic: false
-#     turn_on_action:
-#       - switch.turn_on: modbus_power_switch
-#       - delay: 2s
-#     turn_off_action:
-#       - switch.turn_off: modbus_power_switch
-#       - delay: 2s
-#     lambda: |-
-#       ESP_LOGD("power_control", "Unit status: %d", (int)id(gree_status_unit_status).state);
-#       if (id(gree_status_unit_status).state == 8) {
-#         return false;
-#       } else {
-#         return true;
-#       }
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_coil_water_tank
-#     name: "Water Tank"
-#     register_type: coil
-#     address: 29
-#     bitmask: 1
-#     device_class: outlet
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_coil_ctrl_state
-#     name: "Control State (Room Temp = ON, Water Temp = OFF)"
-#     register_type: coil
-#     address: 17
-#     bitmask: 1
-#     device_class: switch
-#     icon: "mdi:thermometer"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_coil_quiet_ctrl
-#     name: "Quiet Mode"
-#     register_type: coil
-#     address: 21
-#     bitmask: 1
-#     device_class: switch
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_coil_wdwdepend
-#     name: "Weather Dependent Mode"
-#     register_type: coil
-#     address: 22
-#     bitmask: 1
-#     device_class: switch
-#
-# binary_sensor:
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_coil_tank_heater_state
-#     name: "Water Tank Heater State"
-#     device_class: heat
-#     address: 173
-#     register_type: coil
-#     entity_category: diagnostic
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_coil_tank_temp_sensor_error
-#     name: "Water Tank Temperature Sensor Error"
-#     device_class: problem
-#     address: 156
-#     register_type: coil
-#     entity_category: diagnostic
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_coil_compressor_state
-#     name: "Compressor State"
-#     address: 80
-#     register_type: coil
-#     device_class: power
-#     entity_category: diagnostic
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_coil_crankcase_heater_state
-#     name: "Crankcase Heater State"
-#     address: 84
-#     register_type: coil
-#     device_class: heat
-#     entity_category: diagnostic
-#
-#
-
-text_sensor:
-  - platform: template
-    id: versati_117_unit_status_text
-    name: "versati_117_unit_status"
-
-sensor:
-  #   - platform: modbus_controller
-  #     modbus_controller_id: heat_pump_controller
-  #     id: gree_status_t_tank
-  #     name: "Hot Water Tank Temperature"
-  #     device_class: temperature
-  #     state_class: measurement
-  #     address: 128
-  #     register_type: holding
-  #     value_type: S_WORD
-  #     accuracy_decimals: 1
-  #     filters:
-  #       - multiply: 0.1
-  #     unit_of_measurement: "°C"
-  #
-  #   - platform: modbus_controller
-  #     modbus_controller_id: heat_pump_controller
-  #     id: gree_delta_heat
-  #     name: "Delta Temperature - Heat"
-  #     device_class: temperature
-  #     state_class: measurement
-  #     address: 30
-  #     register_type: holding
-  #     value_type: U_WORD
-  #     unit_of_measurement: "°C"
-  #
-  #   - platform: modbus_controller
-  #     modbus_controller_id: heat_pump_controller
-  #     id: gree_delta_room_temp
-  #     name: "Delta Room Temperature"
-  #     device_class: temperature
-  #     state_class: measurement
-  #     address: 32
-  #     register_type: holding
-  #     value_type: U_WORD
-  #     unit_of_measurement: "°C"
-  #
-  #   - platform: modbus_controller
-  #     modbus_controller_id: heat_pump_controller
-  #     id: gree_current_limit
-  #     name: "Current Limit"
-  #     device_class: current
-  #     state_class: measurement
-  #     address: 38
-  #     register_type: holding
-  #     value_type: U_WORD
-  #     unit_of_measurement: "A"
-  #
+number:
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_wot_heat
+    name: "Water Outlet Temperature - Heat"
+    device_class: temperature
+    address: 10
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
 
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
-    id: versati_unit_status_number
+    id: versati_iii_rt_heat
+    name: "Room Temperature - Heat"
+    device_class: temperature
+    address: 12
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_t_water_tank
+    name: "Hot Water Tank Temperature"
+    device_class: temperature
+    address: 13
+    register_type: holding
+    value_type: U_WORD
+    min_value: 40
+    max_value: 80
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_upper_at_heat
+    name: "Upper Ambient Temperature - Heat"
+    device_class: temperature
+    address: 17
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_lower_at_heat
+    name: "Lower Ambient Temperature - Heat"
+    device_class: temperature
+    address: 18
+    register_type: holding
+    value_type: S_WORD
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_upper_rt_heat
+    name: "Upper Room Temperature - Heat"
+    device_class: temperature
+    address: 19
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_lower_rt_heat
+    name: "Lower Room Temperature - Heat"
+    device_class: temperature
+    address: 20
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_upper_wt_heat
+    name: "Upper Water Temperature - Heat"
+    device_class: temperature
+    address: 21
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_lower_wt_heat
+    name: "Lower Water Temperature - Heat"
+    device_class: temperature
+    address: 22
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_delta_hot_water
+    name: "Hot Water Delta Temperature"
+    device_class: temperature
+    address: 31
+    register_type: holding
+    value_type: U_WORD
+    min_value: 2
+    max_value: 8
+    step: 1
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_power_limit
+    name: "Power Limit"
+    device_class: power
+    address: 43
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "kW"
+    min_value: 0
+    max_value: 10
+    step: 0.1
+
+select:
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_mode
+    name: "Mode"
+    address: 2
+    value_type: U_WORD
+    optionsmap:
+      "Heat": 1
+      "Hot Water": 2
+      "Cool + Hot Water": 3
+      "Heat + Hot Water": 4
+      "Cool": 5
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_tank_heater
+    name: "Tank Heater Mode"
+    address: 36
+    value_type: U_WORD
+    optionsmap:
+      "Logic 1: Compressor and Tank Heater separate": 1
+      "Logic 2: Compressor and Tank Heater simultaneous allowed": 2
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_thermostat
+    name: "Thermostat"
+    address: 39
+    value_type: U_WORD
+    optionsmap:
+      "Without": 0
+      "Air": 1
+      "Air + Hot Water": 2
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_on_off
+    name: Internal ON/OFF select
+    address: 42
+    value_type: U_WORD
+    optionsmap:
+      "On": 0xAA
+      "Off": 0x55
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_status_thermostat
+    name: "Thermostat Status"
+    address: 132
+    value_type: U_WORD
+    optionsmap:
+      "Cool": 1
+      "Heat": 2
+      "Off": 3
+
+switch:
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_coil_ctrl_state
+    name: "Control State (Room Temp = ON, Water Temp = OFF)"
+    register_type: coil
+    address: 17
+    bitmask: 1
+    device_class: switch
+    icon: "mdi:thermometer"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_coil_quiet_ctrl
+    name: "Quiet Mode"
+    register_type: coil
+    address: 21
+    bitmask: 1
+    device_class: switch
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_coil_wdwdepend
+    name: "Weather Dependent Mode"
+    register_type: coil
+    address: 22
+    bitmask: 1
+    device_class: switch
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_coil_water_tank
+    name: "Water Tank"
+    register_type: coil
+    address: 29
+    bitmask: 1
+    device_class: outlet
+
+  - platform: template
+    name: "On/Off"
+    lambda: |-
+      if (id(pending_switch_state) != -1) {
+        return id(pending_switch_state) == 1;
+      }
+      return id(versati_iii_onoff_state).state == 1;
+    turn_on_action:
+      - lambda: |-
+          id(pending_switch_state) = 1;
+      - select.set:
+          id: versati_iii_on_off
+          option: "On"
+    turn_off_action:
+      - lambda: |-
+          id(pending_switch_state) = 0;
+      - select.set:
+          id: versati_iii_on_off
+          option: "Off"
+    optimistic: false
+
+binary_sensor:
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_coil_compressor_state
+    name: "Compressor State"
+    address: 80
+    register_type: coil
+    device_class: power
+    entity_category: diagnostic
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_coil_crankcase_heater_state
+    name: "Crankcase Heater State"
+    address: 84
+    register_type: coil
+    device_class: heat
+    entity_category: diagnostic
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_coil_tank_temp_sensor_error
+    name: "Water Tank Temperature Sensor Error"
+    device_class: problem
+    address: 156
+    register_type: coil
+    entity_category: diagnostic
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_coil_tank_heater_state
+    name: "Water Tank Heater State"
+    device_class: heat
+    address: 173
+    register_type: coil
+    entity_category: diagnostic
+
+
+
+sensor:
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_delta_heat
+    name: "Delta Temperature - Heat"
+    device_class: temperature
+    state_class: measurement
+    address: 30
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_delta_room_temp
+    name: "Delta Room Temperature"
+    device_class: temperature
+    state_class: measurement
+    address: 32
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_current_limit
+    name: "Current Limit"
+    device_class: current
+    state_class: measurement
+    address: 38
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "A"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_onoff_state
+    name: "On/Off State"
+    address: 42
+    register_type: holding
+    filters:
+      - lambda: |-
+          if (x == 170) return 1;   // ON
+          else if (x == 85) return 0; // OFF
+          return -1; // unknown/error
+    on_value:
+      then:
+        - lambda: |-
+            if ((id(pending_switch_state) == 1 && id(versati_iii_onoff_state).state == 1) ||
+                (id(pending_switch_state) == 0 && id(versati_iii_onoff_state).state == 0)) {
+              id(pending_switch_state) = -1;
+            }
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_internal_unit_status
     internal: true
     address: 117
     register_type: holding
@@ -365,7 +368,7 @@ sensor:
     on_value:
       then:
         - lambda: |-
-            int state = id(versati_unit_status_number).state;
+            int state = id(versati_iii_internal_unit_status).state;
             std::string text;
             if (state == 1) {
               text = "COOL";
@@ -378,91 +381,141 @@ sensor:
             } else {
               text = "UNKNOWN";
             }
-            id(versati_117_unit_status_text).publish_state(text);
+            id(versati_iii_unit_status).publish_state(text);
 
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_status_t_outdoor
-#     name: "Outdoor Temperature"
-#     device_class: temperature
-#     state_class: measurement
-#     address: 118
-#     register_type: holding
-#     value_type: S_WORD
-#     accuracy_decimals: 1
-#     filters:
-#       - multiply: 0.1
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_status_t_water_out
-#     name: "Water Outlet Temperature"
-#     device_class: temperature
-#     state_class: measurement
-#     address: 125
-#     register_type: holding
-#     value_type: U_WORD
-#     accuracy_decimals: 1
-#     filters:
-#       - multiply: 0.1
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_status_t_water_in
-#     name: "Water Inlet Temperature"
-#     device_class: temperature
-#     state_class: measurement
-#     address: 127
-#     register_type: holding
-#     value_type: U_WORD
-#     accuracy_decimals: 1
-#     filters:
-#       - multiply: 0.1
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: t_remote_room
-#     name: "Remote Room Temperature"
-#     device_class: temperature
-#     state_class: measurement
-#     address: 129
-#     register_type: holding
-#     value_type: U_WORD
-#     accuracy_decimals: 1
-#     filters:
-#       - multiply: 0.1
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_status_t_weather_depend
-#     name: "Weather Dependent Temperature"
-#     device_class: temperature
-#     state_class: measurement
-#     address: 137
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "°C"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_status_setting_frequency
-#     name: "Setting Frequency"
-#     state_class: measurement
-#     address: 142
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "Hz"
-#
-#   - platform: modbus_controller
-#     modbus_controller_id: heat_pump_controller
-#     id: gree_status_running_frequency
-#     name: "Running Frequency"
-#     state_class: measurement
-#     address: 143
-#     register_type: holding
-#     value_type: U_WORD
-#     unit_of_measurement: "Hz"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_status_t_outdoor
+    name: "Outdoor Temperature"
+    device_class: temperature
+    state_class: measurement
+    address: 118
+    register_type: holding
+    value_type: S_WORD
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_status_t_water_out
+    name: "Water Outlet Temperature"
+    device_class: temperature
+    state_class: measurement
+    address: 125
+    register_type: holding
+    value_type: U_WORD
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_status_t_water_in
+    name: "Water Inlet Temperature"
+    device_class: temperature
+    state_class: measurement
+    address: 127
+    register_type: holding
+    value_type: U_WORD
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_status_t_tank
+    name: "Hot Water Tank Temperature"
+    device_class: temperature
+    state_class: measurement
+    address: 128
+    register_type: holding
+    value_type: S_WORD
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: t_remote_room
+    name: "Remote Room Temperature"
+    device_class: temperature
+    state_class: measurement
+    address: 129
+    register_type: holding
+    value_type: U_WORD
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: "versati_iii_internal_disinfection"
+    internal: true
+    address: 135
+    register_type: holding
+    value_type: S_WORD
+    accuracy_decimals: 1
+    on_value:
+      then:
+        - lambda: |-
+            int state = id(versati_iii_internal_disinfection).state;
+            std::string text;
+            if (state == 1) {
+              text = "Running";
+            } else if (state == 2) {
+              text = "Done";
+            } else if (state == 3) {
+              text = "Failed";
+            } else if (state == 0) {
+              text = "OFF";
+            } else {
+              text = "UNKNOWN";
+            }
+            id(versati_iii_disinfection).publish_state(text);
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_status_t_weather_depend
+    name: "Weather Dependent Temperature"
+    device_class: temperature
+    state_class: measurement
+    address: 137
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_status_setting_frequency
+    name: "Setting Frequency"
+    state_class: measurement
+    address: 142
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "Hz"
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_status_running_frequency
+    name: "Running Frequency"
+    state_class: measurement
+    address: 143
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "Hz"
+
+text_sensor:
+  - platform: template
+    id: versati_iii_unit_status
+    name: "Unit Status"
+
+  - platform: template
+    id: versati_iii_disinfection
+    name: "Disinfection"
+
