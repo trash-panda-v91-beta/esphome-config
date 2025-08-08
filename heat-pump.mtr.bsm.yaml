@@ -1,3 +1,5 @@
+# Gree Versati III Heat Pump
+
 substitutions:
   area: mtr.bsm
   device_name: heat-pump
@@ -7,7 +9,7 @@ packages:
   device: !include devices/atom-lite.yaml
 
 uart:
-  id: mod_bus
+  id: modbus_uart
   tx_pin: 26
   rx_pin: 32
   baud_rate: 9600
@@ -15,19 +17,19 @@ uart:
   data_bits: 8
 
 modbus:
-  id: modbus_versati3
-  uart_id: mod_bus
+  id: heat_pump_modbus
+  uart_id: modbus_uart
 
 modbus_controller:
-  - id: versati3
+  - id: heat_pump_controller
     address: 0x01
-    modbus_id: modbus_versati3
+    modbus_id: heat_pump_modbus
     setup_priority: -10
     update_interval: 30s
 
 number:
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_t_water_tank
     name: "Hot Water Tank Temperature"
     device_class: temperature
@@ -39,7 +41,7 @@ number:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_delta_hot_water
     name: "Hot Water Delta Temperature"
     device_class: temperature
@@ -52,7 +54,7 @@ number:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_wot_heat
     name: "Water Outlet Temperature - Heat"
     device_class: temperature
@@ -62,7 +64,7 @@ number:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_rt_heat
     name: "Room Temperature - Heat"
     device_class: temperature
@@ -72,7 +74,7 @@ number:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_upper_wt_heat
     name: "Upper Water Temperature - Heat"
     device_class: temperature
@@ -82,7 +84,7 @@ number:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_lower_wt_heat
     name: "Lower Water Temperature - Heat"
     device_class: temperature
@@ -92,7 +94,7 @@ number:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_upper_at_heat
     name: "Upper Ambient Temperature - Heat"
     device_class: temperature
@@ -102,7 +104,7 @@ number:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_lower_at_heat
     name: "Lower Ambient Temperature - Heat"
     device_class: temperature
@@ -112,7 +114,7 @@ number:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_upper_rt_heat
     name: "Upper Room Temperature - Heat"
     device_class: temperature
@@ -122,7 +124,7 @@ number:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_lower_rt_heat
     name: "Lower Room Temperature - Heat"
     device_class: temperature
@@ -132,7 +134,7 @@ number:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_power_limit
     name: "Power Limit"
     device_class: power
@@ -146,7 +148,7 @@ number:
 
 select:
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_tank_heater
     name: "Tank Heater Mode"
     address: 36
@@ -156,7 +158,7 @@ select:
       "Logic 2: Compressor and Tank Heater simultaneous allowed": 2
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_mode
     name: "Mode"
     address: 2
@@ -169,7 +171,7 @@ select:
       "Cool": 5
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_thermostat
     name: "Thermostat"
     address: 39
@@ -180,7 +182,7 @@ select:
       "Air + Hot Water": 2
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_status_thermostat
     name: "Thermostat Status"
     address: 132
@@ -192,9 +194,9 @@ select:
 
 switch:
   - platform: modbus_controller
-    modbus_controller_id: versati3
-    id: gree_on_off
     name: "Power"
+    modbus_controller_id: heat_pump_controller
+    id: modbus_power_switch
     address: 42
     register_type: holding
     write_lambda: |-
@@ -207,7 +209,7 @@ switch:
     device_class: switch
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_coil_water_tank
     name: "Water Tank"
     register_type: coil
@@ -216,7 +218,7 @@ switch:
     device_class: outlet
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_coil_ctrl_state
     name: "Control State (Room Temp = ON, Water Temp = OFF)"
     register_type: coil
@@ -226,7 +228,7 @@ switch:
     icon: "mdi:thermometer"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_coil_quiet_ctrl
     name: "Quiet Mode"
     register_type: coil
@@ -235,7 +237,7 @@ switch:
     device_class: switch
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_coil_wdwdepend
     name: "Weather Dependent Mode"
     register_type: coil
@@ -245,7 +247,7 @@ switch:
 
 binary_sensor:
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_coil_tank_heater_state
     name: "Water Tank Heater State"
     device_class: heat
@@ -254,7 +256,7 @@ binary_sensor:
     entity_category: diagnostic
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_coil_tank_temp_sensor_error
     name: "Water Tank Temperature Sensor Error"
     device_class: problem
@@ -263,7 +265,7 @@ binary_sensor:
     entity_category: diagnostic
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_coil_compressor_state
     name: "Compressor State"
     address: 80
@@ -272,7 +274,7 @@ binary_sensor:
     entity_category: diagnostic
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_coil_crankcase_heater_state
     name: "Crankcase Heater State"
     address: 84
@@ -282,7 +284,7 @@ binary_sensor:
 
 sensor:
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_status_t_tank
     name: "Hot Water Tank Temperature"
     device_class: temperature
@@ -296,7 +298,7 @@ sensor:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_delta_heat
     name: "Delta Temperature - Heat"
     device_class: temperature
@@ -307,7 +309,7 @@ sensor:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_delta_room_temp
     name: "Delta Room Temperature"
     device_class: temperature
@@ -318,7 +320,7 @@ sensor:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_current_limit
     name: "Current Limit"
     device_class: current
@@ -329,7 +331,7 @@ sensor:
     unit_of_measurement: "A"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_status_unit_status
     name: "Unit Status"
     state_class: measurement
@@ -338,7 +340,7 @@ sensor:
     value_type: U_WORD
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_status_t_outdoor
     name: "Outdoor Temperature"
     device_class: temperature
@@ -352,7 +354,7 @@ sensor:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_status_t_water_out
     name: "Water Outlet Temperature"
     device_class: temperature
@@ -366,7 +368,7 @@ sensor:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_status_t_water_in
     name: "Water Inlet Temperature"
     device_class: temperature
@@ -380,7 +382,7 @@ sensor:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: t_remote_room
     name: "Remote Room Temperature"
     device_class: temperature
@@ -394,7 +396,7 @@ sensor:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_status_t_weather_depend
     name: "Weather Dependent Temperature"
     device_class: temperature
@@ -405,7 +407,7 @@ sensor:
     unit_of_measurement: "°C"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_status_setting_frequency
     name: "Setting Frequency"
     state_class: measurement
@@ -415,7 +417,7 @@ sensor:
     unit_of_measurement: "Hz"
 
   - platform: modbus_controller
-    modbus_controller_id: versati3
+    modbus_controller_id: heat_pump_controller
     id: gree_status_running_frequency
     name: "Running Frequency"
     state_class: measurement
