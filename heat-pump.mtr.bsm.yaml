@@ -196,6 +196,7 @@ switch:
     command_on: 0xAA
     command_off: 0x55
     icon: "mdi:power"
+    device_class: "switch"
 
   - platform: modbus_controller
     modbus_controller_id: versati3
@@ -204,6 +205,7 @@ switch:
     register_type: coil
     address: 29
     bitmask: 1
+    device_class: "outlet"
 
   - platform: modbus_controller
     modbus_controller_id: versati3
@@ -212,6 +214,7 @@ switch:
     register_type: coil
     address: 17
     bitmask: 1
+    device_class: "switch"
   - platform: modbus_controller
     modbus_controller_id: versati3
     id: gree_coil_quiet_ctrl
@@ -219,6 +222,8 @@ switch:
     register_type: coil
     address: 21
     bitmask: 1
+    device_class: "switch"
+
   - platform: modbus_controller
     modbus_controller_id: versati3
     id: gree_coil_wdwdepend
@@ -226,6 +231,7 @@ switch:
     register_type: coil
     address: 22
     bitmask: 1
+    device_class: "switch"
 
 binary_sensor:
 
@@ -236,6 +242,7 @@ binary_sensor:
     device_class: "heat"
     address: 173
     register_type: coil
+    entity_category: "diagnostic"
 
   - platform: modbus_controller
     modbus_controller_id: versati3
@@ -244,18 +251,23 @@ binary_sensor:
     device_class: "problem"
     address: 156
     register_type: coil
+    entity_category: "diagnostic"
   - platform: modbus_controller
     modbus_controller_id: versati3
     id: gree_coil_compressor_state
     name: "Compressor State"
     address: 80
     register_type: coil
+    device_class: "power"
+    entity_category: "diagnostic"
   - platform: modbus_controller
     modbus_controller_id: versati3
     id: gree_coil_crankcase_heater_state
     name: "Crankcase Heater State"
     address: 84
     register_type: coil
+    device_class: "heat"
+    entity_category: "diagnostic"
 
 sensor:
   - platform: modbus_controller
