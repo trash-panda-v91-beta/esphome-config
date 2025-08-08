@@ -173,15 +173,7 @@ select:
       "Without": 0
       "Air": 1
       "Air + Hot Water": 2
-  - platform: modbus_controller
-    modbus_controller_id: versati3
-    id: gree_on_off
-    name: "Power"
-    address: 42
-    value_type: U_WORD
-    optionsmap:
-      "On": 0xAA
-      "Off": 0x55
+
   - platform: modbus_controller
     modbus_controller_id: versati3
     id: gree_status_thermostat
@@ -196,11 +188,23 @@ select:
 switch:
   - platform: modbus_controller
     modbus_controller_id: versati3
+    id: gree_on_off
+    name: "Power"
+    address: 42
+    register_type: holding
+    value_type: U_WORD
+    command_on: 0xAA
+    command_off: 0x55
+    icon: "mdi:power"
+
+  - platform: modbus_controller
+    modbus_controller_id: versati3
     id: gree_coil_water_tank
     name: "Water Tank"
     register_type: coil
     address: 29
     bitmask: 1
+
   - platform: modbus_controller
     modbus_controller_id: versati3
     id: gree_coil_ctrl_state
