@@ -28,6 +28,31 @@ modbus_controller:
 number:
   - platform: modbus_controller
     modbus_controller_id: versati3
+    id: gree_t_water_tank
+    name: "Hot Water Tank Temperature"
+    device_class: "temperature"
+    address: 13
+    register_type: holding
+    value_type: U_WORD
+    min_value: 40
+    max_value: 80
+    unit_of_measurement: '°C'
+
+  - platform: modbus_controller
+    modbus_controller_id: versati3
+    id: gree_delta_hot_water
+    name: "Hot Water Delta Temperature"
+    device_class: "temperature"
+    address: 31
+    register_type: holding
+    value_type: U_WORD
+    min_value: 2
+    max_value: 8
+    step: 1
+    unit_of_measurement: '°C'
+
+  - platform: modbus_controller
+    modbus_controller_id: versati3
     id: gree_wot_heat
     name: "gree_wot_heat"
     device_class: "temperature"
@@ -119,6 +144,15 @@ number:
 select:
   - platform: modbus_controller
     modbus_controller_id: versati3
+    id: gree_tank_heater
+    name: "Tank Heater"
+    address: 36
+    value_type: U_WORD
+    optionsmap:
+      "Setting 1": 1
+      "Setting 2": 2
+  - platform: modbus_controller
+    modbus_controller_id: versati3
     id: gree_mode
     name: "gree_mode"
     address: 2
@@ -162,6 +196,13 @@ select:
 switch:
   - platform: modbus_controller
     modbus_controller_id: versati3
+    id: gree_coil_water_tank
+    name: "Water Tank"
+    register_type: coil
+    address: 29
+    bitmask: 1
+  - platform: modbus_controller
+    modbus_controller_id: versati3
     id: gree_coil_ctrl_state
     name: gree_coil_ctrl_state
     register_type: coil
@@ -183,6 +224,22 @@ switch:
     bitmask: 1
 
 binary_sensor:
+
+  - platform: modbus_controller
+    modbus_controller_id: versati3
+    id: gree_coil_tank_heater_state
+    name: "Water Tank Heater State"
+    device_class: "heat"
+    address: 173
+    register_type: coil
+
+  - platform: modbus_controller
+    modbus_controller_id: versati3
+    id: gree_coil_tank_temp_sensor_error
+    name: "Water Tank Temperature Sensor Error"
+    device_class: "problem"
+    address: 156
+    register_type: coil
   - platform: modbus_controller
     modbus_controller_id: versati3
     id: gree_coil_compressor_state
@@ -197,6 +254,19 @@ binary_sensor:
     register_type: coil
 
 sensor:
+  - platform: modbus_controller
+    modbus_controller_id: versati3
+    id: gree_status_t_tank
+    name: "Hot Water Tank Temperature"
+    device_class: "temperature"
+    state_class: "measurement"
+    address: 128
+    register_type: holding
+    value_type: S_WORD
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+    unit_of_measurement: '°C'
   - platform: modbus_controller
     modbus_controller_id: versati3
     id: gree_delta_heat
