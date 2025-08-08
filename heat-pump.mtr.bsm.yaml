@@ -4,6 +4,7 @@ substitutions:
   area: mtr.bsm
   device_name: heat-pump
   friendly_name: Heat Pump
+  log_level: DEBUG
 
 packages:
   device: !include devices/atom-lite.yaml
