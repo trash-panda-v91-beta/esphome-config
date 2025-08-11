@@ -179,6 +179,16 @@ select:
 
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
+    name: "Optional E-Heater"
+    address: 3
+    value_type: U_WORD
+    optionsmap:
+      "1 set": 1
+      "2 sets": 2
+      "Off": 3
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
     id: versati_iii_tank_heater
     name: "Tank Heater Mode"
     address: 36
@@ -308,14 +318,26 @@ binary_sensor:
 
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
+    name: "E-heater 1 State"
+    address: 171
+    register_type: coil
+    device_class: heat
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    name: "E-heater 2 State"
+    address: 172
+    register_type: coil
+    device_class: heat
+
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
     id: versati_iii_coil_tank_heater_state
     name: "Water Tank Heater State"
     device_class: heat
     address: 173
     register_type: coil
     entity_category: diagnostic
-
-
 
 sensor:
   - platform: modbus_controller
