@@ -1,4 +1,3 @@
----
 substitutions:
   # Length of time in ms that the relay should stay active.
   # Some garage doors need the relay to stay active for longer.
@@ -48,8 +47,8 @@ packages:
   wifi: !include ../components/wifi.yaml
   board: !include ../boards/esp01_1m.yaml
 
-esphome:
-  esp8266_restore_from_flash: true
+esp8266:
+  restore_from_flash: true
 
 binary_sensor:
   - platform: gpio
