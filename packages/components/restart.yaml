@@ -1,5 +1,5 @@
 ---
-# https://esphome.io/components/button/restart.html
+# https://esphome.io/packages/button/restart.html
 
 button:
   platform: restart

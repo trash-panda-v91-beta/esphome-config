@@ -1,8 +1,6 @@
-# https://esphome.io/components/wifi.html
-
+# https://esphome.io/packages/wifi.html
 substitutions:
   domain: !secret domain
-
 wifi:
   id: component_wifi
   ssid: !secret wifi_ssid
@@ -12,15 +10,12 @@ wifi:
   ap:
     ssid: "${friendly_name} AP"
     password: !secret wifi_fallback_ssid_password
-
 captive_portal:
-
 sensor:
   - platform: wifi_signal
     id: sensor_wifi_signal
     name: "${friendly_name} WiFi Signal"
     update_interval: 300s
-
 text_sensor:
   - platform: wifi_info
     ip_address:

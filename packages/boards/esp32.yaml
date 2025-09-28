@@ -1,0 +1,3 @@
+packages:
+  esphome:
+    file: ../packages/esphome.yaml

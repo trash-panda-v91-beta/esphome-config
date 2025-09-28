@@ -1,3 +1,0 @@
-esphome:
-  <<: !include .esphome.yaml
-

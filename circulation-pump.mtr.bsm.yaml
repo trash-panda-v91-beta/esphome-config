@@ -7,4 +7,23 @@ substitutions:
   double_toggle: "false"
   toggle_duration: "250" # Time in ms
 packages:
-  device: !include devices/sonoff-mini.yaml
+  api:
+    file: packages/components/api.yaml
+  logger:
+    file: packages/components/logger.yaml
+  ota:
+    file: packages/components/ota.yaml
+  restart:
+    file: packages/components/restart.yaml
+  secrets:
+    file: packages/components/secrets.yaml
+  time:
+    file: packages/components/time.yaml
+  version:
+    file: packages/components/version.yaml
+  wifi:
+    file: packages/components/wifi.yaml
+  board:
+    file: packages/boards/esp8285.yaml
+  device_base:
+    file: packages/devices/sonoff-mini.yaml

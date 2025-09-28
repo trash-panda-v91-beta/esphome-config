@@ -1,5 +1,5 @@
 ---
-# https://esphome.io/components/time.html
+# https://esphome.io/packages/time.html
 
 time:
   - platform: sntp

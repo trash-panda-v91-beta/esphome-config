@@ -1,10 +1,27 @@
----
 substitutions:
   area: gn.cs
   device_name: pond-power-plug
   friendly_name: Pond Power Plug
   current_res: "0.00257"
   voltage_div: "947"
-
 packages:
-  device: !include devices/cloudfree-smart-plug.yaml
+  api:
+    file: packages/components/api.yaml
+  logger:
+    file: packages/components/logger.yaml
+  ota:
+    file: packages/components/ota.yaml
+  restart:
+    file: packages/components/restart.yaml
+  secrets:
+    file: packages/components/secrets.yaml
+  time:
+    file: packages/components/time.yaml
+  version:
+    file: packages/components/version.yaml
+  wifi:
+    file: packages/components/wifi.yaml
+  board:
+    file: packages/boards/esp01_1m.yaml
+  device_base:
+    file: packages/devices/cloudfree-smart-plug.yaml

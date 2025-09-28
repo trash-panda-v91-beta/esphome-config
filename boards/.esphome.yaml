@@ -1,6 +1,0 @@
----
-# https://esphome.io/components/esphome.html
-
-area: "${area}"
-name: "${device_name}"
-friendly_name: "${friendly_name}"

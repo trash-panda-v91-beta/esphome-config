@@ -3,16 +3,32 @@ globals:
   - id: pending_switch_state
     type: int
     restore_value: no
-    initial_value: '-1'  # -1: no pending, 0: off pending, 1: on pending
-
+    initial_value: '-1' # -1: no pending, 0: off pending, 1: on pending
 substitutions:
   area: mtr.bsm
   device_name: heat-pump
   friendly_name: Heat Pump
-
 packages:
-  device: !include devices/atom-lite.yaml
-
+  api:
+    file: packages/components/api.yaml
+  logger:
+    file: packages/components/logger.yaml
+  ota:
+    file: packages/components/ota.yaml
+  restart:
+    file: packages/components/restart.yaml
+  secrets:
+    file: packages/components/secrets.yaml
+  time:
+    file: packages/components/time.yaml
+  version:
+    file: packages/components/version.yaml
+  wifi:
+    file: packages/components/wifi.yaml
+  board:
+    file: packages/boards/esp32.yaml
+  device_base:
+    file: packages/devices/atom-lite.yaml
 uart:
   id: modbus_uart
   tx_pin: 26
@@ -20,18 +36,15 @@ uart:
   baud_rate: 9600
   stop_bits: 1
   data_bits: 8
-
 modbus:
   id: heat_pump_modbus
   uart_id: modbus_uart
-
 modbus_controller:
   - id: heat_pump_controller
     address: 0x01
     modbus_id: heat_pump_modbus
     setup_priority: -10
     update_interval: 15s
-
 number:
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
@@ -42,7 +55,6 @@ number:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_rt_heat
@@ -52,7 +64,6 @@ number:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_t_water_tank
@@ -64,7 +75,6 @@ number:
     min_value: 40
     max_value: 80
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     name: Temperature - Heat Pump Maximum
@@ -76,7 +86,6 @@ number:
     max_value: 55
     unit_of_measurement: "°C"
     step: 1
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_upper_at_heat
@@ -86,7 +95,6 @@ number:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_lower_at_heat
@@ -96,7 +104,6 @@ number:
     register_type: holding
     value_type: S_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_upper_rt_heat
@@ -106,7 +113,6 @@ number:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_lower_rt_heat
@@ -116,7 +122,6 @@ number:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_upper_wt_heat
@@ -126,7 +131,6 @@ number:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_lower_wt_heat
@@ -136,7 +140,6 @@ number:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_delta_hot_water
@@ -149,7 +152,6 @@ number:
     max_value: 8
     step: 1
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_power_limit
@@ -162,7 +164,6 @@ number:
     min_value: 0
     max_value: 10
     step: 0.1
-
 select:
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
@@ -176,7 +177,6 @@ select:
       "Cool + Hot Water": 3
       "Heat + Hot Water": 4
       "Cool": 5
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     name: "Optional E-Heater"
@@ -186,7 +186,6 @@ select:
       "1 set": 1
       "2 sets": 2
       "Off": 3
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_tank_heater
@@ -196,7 +195,6 @@ select:
     optionsmap:
       "Logic 1: Compressor and Tank Heater separate": 1
       "Logic 2: Compressor and Tank Heater simultaneous allowed": 2
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_thermostat
@@ -207,7 +205,6 @@ select:
       "Without": 0
       "Air": 1
       "Air + Hot Water": 2
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_on_off
@@ -217,7 +214,6 @@ select:
     optionsmap:
       "On": 0xAA
       "Off": 0x55
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_status_thermostat
@@ -228,7 +224,6 @@ select:
       "Cool": 1
       "Heat": 2
       "Off": 3
-
 switch:
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
@@ -239,7 +234,6 @@ switch:
     bitmask: 1
     device_class: switch
     icon: "mdi:thermometer"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_coil_quiet_ctrl
@@ -248,7 +242,6 @@ switch:
     address: 21
     bitmask: 1
     device_class: switch
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_coil_wdwdepend
@@ -257,7 +250,6 @@ switch:
     address: 22
     bitmask: 1
     device_class: switch
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_coil_water_tank
@@ -266,7 +258,6 @@ switch:
     address: 29
     bitmask: 1
     device_class: outlet
-
   - platform: template
     name: "On/Off"
     lambda: |-
@@ -287,7 +278,6 @@ switch:
           id: versati_iii_on_off
           option: "Off"
     optimistic: false
-
 binary_sensor:
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
@@ -297,7 +287,6 @@ binary_sensor:
     register_type: coil
     device_class: power
     entity_category: diagnostic
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_coil_crankcase_heater_state
@@ -306,7 +295,6 @@ binary_sensor:
     register_type: coil
     device_class: heat
     entity_category: diagnostic
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_coil_tank_temp_sensor_error
@@ -315,21 +303,18 @@ binary_sensor:
     address: 156
     register_type: coil
     entity_category: diagnostic
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     name: "E-heater 1 State"
     address: 171
     register_type: coil
     device_class: heat
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     name: "E-heater 2 State"
     address: 172
     register_type: coil
     device_class: heat
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_coil_tank_heater_state
@@ -338,7 +323,6 @@ binary_sensor:
     address: 173
     register_type: coil
     entity_category: diagnostic
-
 sensor:
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
@@ -350,7 +334,6 @@ sensor:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_delta_room_temp
@@ -361,7 +344,6 @@ sensor:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_current_limit
@@ -372,7 +354,6 @@ sensor:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "A"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_onoff_state
@@ -391,7 +372,6 @@ sensor:
                 (id(pending_switch_state) == 0 && id(versati_iii_onoff_state).state == 0)) {
               id(pending_switch_state) = -1;
             }
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_internal_unit_status
@@ -416,7 +396,6 @@ sensor:
               text = "UNKNOWN";
             }
             id(versati_iii_unit_status).publish_state(text);
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_status_t_outdoor
@@ -430,7 +409,6 @@ sensor:
     filters:
       - multiply: 0.1
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_status_t_water_out
@@ -444,7 +422,6 @@ sensor:
     filters:
       - multiply: 0.1
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_status_t_water_in
@@ -458,7 +435,6 @@ sensor:
     filters:
       - multiply: 0.1
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_status_t_tank
@@ -472,7 +448,6 @@ sensor:
     filters:
       - multiply: 0.1
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: t_remote_room
@@ -486,7 +461,6 @@ sensor:
     filters:
       - multiply: 0.1
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: "versati_iii_internal_disinfection"
@@ -512,7 +486,6 @@ sensor:
               text = "UNKNOWN";
             }
             id(versati_iii_disinfection).publish_state(text);
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_status_t_weather_depend
@@ -523,7 +496,6 @@ sensor:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "°C"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_status_setting_frequency
@@ -533,7 +505,6 @@ sensor:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "Hz"
-
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
     id: versati_iii_status_running_frequency
@@ -543,13 +514,10 @@ sensor:
     register_type: holding
     value_type: U_WORD
     unit_of_measurement: "Hz"
-
 text_sensor:
   - platform: template
     id: versati_iii_unit_status
     name: "Unit Status"
-
   - platform: template
     id: versati_iii_disinfection
     name: "Disinfection"
-

@@ -1,8 +1,25 @@
----
 substitutions:
   area: gg.cs
   device_name: door
   friendly_name: Garage Door
-
 packages:
-  device: !include devices/opengarage.yaml
+  api:
+    file: packages/components/api.yaml
+  logger:
+    file: packages/components/logger.yaml
+  ota:
+    file: packages/components/ota.yaml
+  restart:
+    file: packages/components/restart.yaml
+  secrets:
+    file: packages/components/secrets.yaml
+  time:
+    file: packages/components/time.yaml
+  version:
+    file: packages/components/version.yaml
+  wifi:
+    file: packages/components/wifi.yaml
+  board:
+    file: packages/boards/esp01_1m.yaml
+  device_base:
+    file: packages/devices/opengarage.yaml

@@ -1,22 +1,22 @@
 packages:
   api:
-    file: ../packages/api.yaml
+    file: ../components/api.yaml
   logger:
-    file: ../packages/logger.yaml
+    file: ../components/logger.yaml
   ota:
-    file: ../packages/ota.yaml
+    file: ../components/ota.yaml
   restart:
-    file: ../packages/restart.yaml
+    file: ../components/restart.yaml
   secrets:
-    file: ../packages/secrets.yaml
+    file: ../components/secrets.yaml
   time:
-    file: ../packages/time.yaml
+    file: ../components/time.yaml
   version:
-    file: ../packages/version.yaml
+    file: ../components/version.yaml
   wifi:
-    file: ../packages/wifi.yaml
+    file: ../components/wifi.yaml
   board:
-    file: ../packages/boards/esp8285.yaml
+    file: ../boards/esp8285.yaml
 sensor:
   - platform: wifi_signal
     name: ${device_name} Wifi Signal Strength

@@ -23,13 +23,13 @@ substitutions:
   # SR04 sensors can be noisy. The median is taken to prevent noisy data.
   # Higher values will slow down the distance sensor's responsiveness,
   # but will result in more consistent data.
-  # See https://esphome.io/packages/sensor/index.html#median
+  # See https://esphome.io/components/sensor/index.html#median
   distance_median_window_size: "31"
   # When the first value should be sent. Must be lower than the distance_median_window_size.
   distance_median_send_first_at: "5"
   # Sound the alarm on open/close
   # RTTL format references:
-  #  - https://esphome.io/packages/rtttl.html?highlight=rtttl#common-beeps
+  #  - https://esphome.io/components/rtttl.html?highlight=rtttl#common-beeps
   #  - https://en.wikipedia.org/wiki/Ring_Tone_Transfer_Language
   open_alarm: "false"
   open_alarm_rtttl: "two_short:d=4,o=6,b=100:c,p,c"
@@ -43,23 +43,23 @@ substitutions:
   # close_alarm_rtttl: 'close_slide:d=128,o=5,b=100:c6,g,e,d,4c.,4p,c6,g,e,d,4c.,4p'
 packages:
   api:
-    file: ../packages/api.yaml
+    file: ../components/api.yaml
   logger:
-    file: ../packages/logger.yaml
+    file: ../components/logger.yaml
   ota:
-    file: ../packages/ota.yaml
+    file: ../components/ota.yaml
   restart:
-    file: ../packages/restart.yaml
+    file: ../components/restart.yaml
   secrets:
-    file: ../packages/secrets.yaml
+    file: ../components/secrets.yaml
   time:
-    file: ../packages/time.yaml
+    file: ../components/time.yaml
   version:
-    file: ../packages/version.yaml
+    file: ../components/version.yaml
   wifi:
-    file: ../packages/wifi.yaml
+    file: ../components/wifi.yaml
   board:
-    file: ../packages/boards/esp01_1m.yaml
+    file: ../boards/esp01_1m.yaml
 esp8266:
   restore_from_flash: true
 binary_sensor:

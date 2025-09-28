@@ -1,5 +1,4 @@
----
-# https://esphome.io/components/api.html
+# https://esphome.io/packages/api.html
 api:
   id: api_server
   encryption:
