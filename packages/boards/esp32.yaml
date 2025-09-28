@@ -1,3 +1,2 @@
 packages:
-  esphome:
-    file: ../components/esphome.yaml
+  - !include ../components/esphome.yaml

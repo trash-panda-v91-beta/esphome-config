@@ -9,26 +9,7 @@ substitutions:
   device_name: heat-pump
   friendly_name: Heat Pump
 packages:
-  api:
-    file: packages/components/api.yaml
-  logger:
-    file: packages/components/logger.yaml
-  ota:
-    file: packages/components/ota.yaml
-  restart:
-    file: packages/components/restart.yaml
-  secrets:
-    file: packages/components/secrets.yaml
-  time:
-    file: packages/components/time.yaml
-  version:
-    file: packages/components/version.yaml
-  wifi:
-    file: packages/components/wifi.yaml
-  board:
-    file: packages/boards/esp32.yaml
-  device_base:
-    file: packages/devices/atom-lite.yaml
+  - !include packages/devices/atom-lite.yaml
 uart:
   id: modbus_uart
   tx_pin: 26
