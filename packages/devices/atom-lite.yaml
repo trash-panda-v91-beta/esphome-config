@@ -3,7 +3,6 @@ packages:
   - !include ../components/logger.yaml
   - !include ../components/ota.yaml
   - !include ../components/restart.yaml
-  - !include ../components/secrets.yaml
   - !include ../components/time.yaml
   - !include ../components/version.yaml
   - !include ../components/wifi.yaml
