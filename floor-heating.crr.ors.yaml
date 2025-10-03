@@ -1,0 +1,6 @@
+substitutions:
+  area: crr.ors
+  device_name: floor-heating
+  friendly_name: Floor Heating
+packages:
+  - !include packages/devices/sonoff-4chr3.yaml
