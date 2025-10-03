@@ -123,6 +123,18 @@ number:
     unit_of_measurement: "°C"
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
+    id: versati_iii_delta_heat
+    name: "Heat Delta Temperature"
+    device_class: temperature
+    address: 30
+    register_type: holding
+    value_type: U_WORD
+    min_value: 2
+    max_value: 10
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
     id: versati_iii_delta_hot_water
     name: "Hot Water Delta Temperature"
     device_class: temperature
@@ -397,6 +409,19 @@ sensor:
     device_class: temperature
     state_class: measurement
     address: 125
+    register_type: holding
+    value_type: U_WORD
+    accuracy_decimals: 1
+    filters:
+      - multiply: 0.1
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_status_t_optional_water_sensor
+    name: "Optional Water Sensor"
+    device_class: temperature
+    state_class: measurement
+    address: 126
     register_type: holding
     value_type: U_WORD
     accuracy_decimals: 1
