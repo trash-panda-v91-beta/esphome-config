@@ -319,7 +319,7 @@ binary_sensor:
 sensor:
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
-    id: versati_iii_delta_heat
+    id: versati_iii_delta_temperature_heat
     name: "Delta Temperature - Heat"
     device_class: temperature
     state_class: measurement
