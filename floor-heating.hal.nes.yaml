@@ -1,6 +1,10 @@
 substitutions:
-  area: crr.ors
+  area: hal.nes
   device_name: floor-heating
   friendly_name: Floor Heating
+  relay_1: Living Room
+  relay_2: Bathroom
+  relay_3: Dining Room
+  relay_4: Kitchen
 packages:
   - !include packages/devices/sonoff-4chr3.yaml

@@ -1,5 +1,5 @@
 substitutions:
-  area: gg.cs
+  area: gar.bas
   device_name: door
   friendly_name: Garage Door
 packages:

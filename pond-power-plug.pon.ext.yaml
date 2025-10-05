@@ -1,5 +1,5 @@
 substitutions:
-  area: gn.cs
+  area: pon.ext
   device_name: pond-power-plug
   friendly_name: Pond Power Plug
   current_res: "0.00257"

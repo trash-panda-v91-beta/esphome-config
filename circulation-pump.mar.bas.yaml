@@ -1,5 +1,5 @@
 substitutions:
-  area: ofc.brn
+  area: mar.bas
   device_name: circulation-pump
   friendly_name: Circulation Pump
   relay_restore_mode: "RESTORE_DEFAULT_OFF" # or ALWAYS_OFF, ALWAYS_ON
