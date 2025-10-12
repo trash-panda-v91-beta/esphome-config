@@ -2,5 +2,9 @@ substitutions:
   area: hal.ors
   device_name: floor-heating
   friendly_name: Floor Heating
+  relay_1: Bathroom
+  relay_2: Hallway
+  relay_3: Kitchen
+  relay_4: Toilet
 packages:
   - !include packages/devices/sonoff-4chr3.yaml
