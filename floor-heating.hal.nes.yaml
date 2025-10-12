@@ -1,5 +1,6 @@
 substitutions:
-  area: hal.nes
+  area: hal
+  zone: nes
   device_name: floor-heating
   friendly_name: Floor Heating
   relay_1: Living Room

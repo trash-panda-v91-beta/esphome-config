@@ -4,7 +4,7 @@ substitutions:
 wifi:
   id: component_wifi
   ssid: !secret wifi_ssid
-  use_address: "${device_name}.${area}.${domain}"
+  use_address: "${device_name}.${area}.${zone}.${domain}"
   password: !secret wifi_password
   reboot_timeout: 10min
   ap:

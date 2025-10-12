@@ -1,5 +1,6 @@
 substitutions:
-  area: gar.bas
+  zone: bar
+  area: gar
   device_name: door
   friendly_name: Garage Door
 packages:

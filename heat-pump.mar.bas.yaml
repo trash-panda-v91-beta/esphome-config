@@ -5,7 +5,8 @@ globals:
     restore_value: no
     initial_value: '-1' # -1: no pending, 0: off pending, 1: on pending
 substitutions:
-  area: mar.bas
+  area: mar
+  zone: bas
   device_name: heat-pump
   friendly_name: Heat Pump
 packages:
