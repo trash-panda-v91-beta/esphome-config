@@ -1,5 +1,5 @@
 substitutions:
-  area: off
+  area: "off"
   zone: bar
   device_name: circulation-pump
   friendly_name: Circulation Pump
