@@ -1,5 +1,4 @@
 # https://esphome.io/packages/esphome.html
 esphome:
-  area: "${area}"
-  name: "${device_name}"
+  name: "${device_name}.${area}"
   friendly_name: "${friendly_name}"
