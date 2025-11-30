@@ -1,0 +1,9 @@
+substitutions:
+  area: kir
+  zone: nes
+  device_name: christmas-lights
+  friendly_name: Christmas Lights
+  current_res: "0.00257"
+  voltage_div: "947"
+packages:
+  - !include packages/devices/cloudfree-smart-plug.yaml
