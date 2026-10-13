@@ -148,6 +148,96 @@ number:
     unit_of_measurement: "°C"
   - platform: modbus_controller
     modbus_controller_id: heat_pump_controller
+    id: versati_iii_wot_cool
+    name: "Water Outlet Temperature - Cool"
+    device_class: temperature
+    address: 9
+    register_type: holding
+    value_type: U_WORD
+    min_value: 7
+    max_value: 25
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_rt_cool
+    name: "Room Temperature - Cool"
+    device_class: temperature
+    address: 11
+    register_type: holding
+    value_type: U_WORD
+    min_value: 18
+    max_value: 30
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_upper_at_cool
+    name: "Upper Ambient Temperature - Cool"
+    device_class: temperature
+    address: 23
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_lower_at_cool
+    name: "Lower Ambient Temperature - Cool"
+    device_class: temperature
+    address: 24
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_upper_rt_cool
+    name: "Upper Room Temperature - Cool"
+    device_class: temperature
+    address: 25
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_lower_rt_cool
+    name: "Lower Room Temperature - Cool"
+    device_class: temperature
+    address: 26
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_upper_wt_cool
+    name: "Upper Water Temperature - Cool"
+    device_class: temperature
+    address: 27
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_lower_wt_cool
+    name: "Lower Water Temperature - Cool"
+    device_class: temperature
+    address: 28
+    register_type: holding
+    value_type: U_WORD
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
+    id: versati_iii_delta_cool
+    name: "Cool Delta Temperature"
+    device_class: temperature
+    address: 29
+    register_type: holding
+    value_type: U_WORD
+    min_value: 2
+    max_value: 10
+    step: 1
+    unit_of_measurement: "°C"
+  - platform: modbus_controller
+    modbus_controller_id: heat_pump_controller
     id: versati_iii_power_limit
     name: "Power Limit"
     device_class: power
