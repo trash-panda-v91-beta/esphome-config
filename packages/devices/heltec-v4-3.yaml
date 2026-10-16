@@ -1,0 +1,9 @@
+packages:
+  - !include ../components/api.yaml
+  - !include ../components/logger.yaml
+  - !include ../components/ota.yaml
+  - !include ../components/restart.yaml
+  - !include ../components/time.yaml
+  - !include ../components/version.yaml
+  - !include ../components/wifi.yaml
+  - !include ../boards/heltec-v4-3.yaml

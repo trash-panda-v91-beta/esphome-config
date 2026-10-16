@@ -1,0 +1,26 @@
+# Heltec WiFi LoRa 32 V4.3 - ESP32-S3 + SX1262 + KCT8103L front-end module, 868 MHz.
+# Radio pinout is the same as the V3; the three FEM pins are what the V4.3 adds.
+packages:
+  - !include ../components/esphome.yaml
+esp32:
+  variant: esp32s3
+  framework:
+    type: esp-idf
+spi:
+  clk_pin: 9
+  mosi_pin: 10
+  miso_pin: 11
+home_io_control:
+  cs_pin: 8
+  rst_pin: 12
+  dio1_pin: 14
+  busy_pin: 13
+  radio_type: sx1262
+  tcxo_voltage: 1_8V
+  fem: kct8103l
+  vfem_pin: 7
+  fem_en_pin: 2
+  fem_pa_pin: 5
+  # The FEM amplifies transmit as well as receive. Raising this risks going over
+  # the 868 MHz limit; the driver logs its own antenna-port estimate at boot.
+  tx_power: 1

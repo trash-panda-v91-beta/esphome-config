@@ -1,0 +1,46 @@
+# Two Somfy J4S io Protect external venetian motors, one window install at the glass
+# room. Driven straight from HA over IO-Homecontrol - no Somfy hub.
+#
+# Pairing day: flash this as-is, press Discover & Pair in HA, then paste the values the
+# log prints into the cover block at the bottom and flash again.
+substitutions:
+  area: glr
+  zone: ors
+  device_name: blinds
+  friendly_name: External Blinds
+  # Pairing results are read out of the log.
+  log_level: DEBUG
+packages:
+  - !include packages/devices/heltec-v4-3.yaml
+esphome:
+  build_flags:
+    - -DIOHOME_FRAME_LOG
+external_components:
+  - source: github://laberning/home_io_control
+home_io_control:
+  # This hub's own address on the radio, 6 hex chars. Changing it after pairing means
+  # re-pairing every device.
+  node_id: "92EBF5"
+  system_key: !secret io_system_key
+  # Onboarding helpers - drop both once the motors are in the cover block below.
+  discover_and_pair_button: true
+  scan_paired_devices_button: true
+  # Route B only: if the installer pairs the motors to a Somfy hub, add this, arm
+  # Recover System Key, then run the hub's own add-a-device wizard.
+  # accept_foreign_pairing: true
+
+# Fill in from the log after Discover & Pair. io_device_type matters: type-specific
+# entities (favorite position, tilt) are generated at compile time.
+# cover:
+#   - platform: home_io_control
+#     name: "Blind left"
+#     device_class: blind
+#     io_device_id: "<from the log>"
+#     io_device_type: "external_venetian_blind"
+#     io_subtype: 0
+#   - platform: home_io_control
+#     name: "Blind right"
+#     device_class: blind
+#     io_device_id: "<from the log>"
+#     io_device_type: "external_venetian_blind"
+#     io_subtype: 0
